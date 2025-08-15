@@ -1,0 +1,24 @@
+-- Core Measures (copy into Modeling → New Measure)
+Total Revenue = SUM ( 'fact_sales'[Sales] )
+Total Profit = SUM ( 'fact_sales'[Profit] )
+Orders = DISTINCTCOUNT ( 'fact_sales'[Order ID] )
+AOV = DIVIDE ( [Total Revenue], [Orders] )
+Profit Margin % = DIVIDE ( [Total Profit], [Total Revenue] )
+
+-- Convenience
+Total Quantity = SUM ( 'fact_sales'[Quantity] )
+Customers = DISTINCTCOUNT ( 'fact_sales'[Customer ID] )
+Products = DISTINCTCOUNT ( 'fact_sales'[Product ID] )
+
+-- Trend helpers
+Revenue LY =
+VAR d = MAX ( 'Date'[Date] )
+RETURN CALCULATE ( [Total Revenue], DATEADD ( 'Date'[Date], -1, YEAR ) )
+
+YoY % Revenue = DIVIDE ( [Total Revenue] - [Revenue LY], [Revenue LY] )
+
+-- RFM (if you import rfm_scores.csv as table 'rfm_scores')
+Avg Frequency = AVERAGE ( 'rfm_scores'[Frequency] )
+Avg Monetary = AVERAGE ( 'rfm_scores'[Monetary] )
+Customers At Risk =
+CALCULATE ( DISTINCTCOUNT ( 'rfm_scores'[Customer ID] ), 'rfm_scores'[R_Score] <= 2 && 'rfm_scores'[F_Score] <= 2 )

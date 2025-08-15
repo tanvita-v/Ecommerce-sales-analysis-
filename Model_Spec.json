@@ -1,0 +1,67 @@
+{
+  "tables": {
+    "fact_sales": {
+      "path": "../data/exports/fact_sales.csv",
+      "key": "Order ID",
+      "date_column": "Order Date"
+    },
+    "dim_customers": {
+      "path": "../data/exports/dim_customers.csv",
+      "key": "Customer ID"
+    },
+    "dim_products": {
+      "path": "../data/exports/dim_products.csv",
+      "key": "Product ID"
+    },
+    "rfm_scores": {
+      "path": "../data/exports/rfm_scores.csv",
+      "key": "Customer ID"
+    },
+    "kpi_summary": {
+      "path": "../data/exports/kpi_summary.csv"
+    },
+    "Date": {
+      "type": "calculated_table",
+      "dax_source": "Date_Table_DAX.pbitxt"
+    }
+  },
+  "relationships": [
+    {
+      "from": {
+        "table": "fact_sales",
+        "column": "Customer ID"
+      },
+      "to": {
+        "table": "dim_customers",
+        "column": "Customer ID"
+      },
+      "cardinality": "ManyToOne",
+      "crossFilterDirection": "Single"
+    },
+    {
+      "from": {
+        "table": "fact_sales",
+        "column": "Product ID"
+      },
+      "to": {
+        "table": "dim_products",
+        "column": "Product ID"
+      },
+      "cardinality": "ManyToOne",
+      "crossFilterDirection": "Single"
+    },
+    {
+      "from": {
+        "table": "Date",
+        "column": "Date"
+      },
+      "to": {
+        "table": "fact_sales",
+        "column": "Order Date"
+      },
+      "cardinality": "OneToMany",
+      "crossFilterDirection": "Single",
+      "active": true
+    }
+  ]
+}

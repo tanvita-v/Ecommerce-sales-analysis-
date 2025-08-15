@@ -1,0 +1,11 @@
+-- Date table (copy into Modeling → New Table)
+Date =
+ADDCOLUMNS (
+    CALENDAR ( DATE(2024,1,1), DATE(2024,12,31) ),
+    "Year", YEAR ( [Date] ),
+    "Month", MONTH ( [Date] ),
+    "YearMonth", FORMAT ( [Date], "YYYY-MM" ),
+    "Quarter", "Q" & FORMAT(QUARTER([Date]), "0"),
+    "Month Name", FORMAT ( [Date], "MMMM" ),
+    "Week Start", STARTOFWEEK ( [Date] )
+)
